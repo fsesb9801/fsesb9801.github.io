@@ -1,0 +1,52 @@
+/**
+ TODO(you): Add CSS for the list that you create yourself!
+*/
+body{
+	margin:0px;
+}
+.head_img{
+	background-image:url(../images/my-img/head.jpg);
+	width:66vw;
+	height:50vw;
+	max-width:1200px;
+	max-height:500px;
+	background-repeat:no-repeat;
+	background-position:center top;
+	background-size:cover;
+	margin:0px auto 80px auto;
+	position:relative;
+}
+.head_text{
+	text-align:center;
+	font-size:48px;
+	font-family: 'Rubik', sans-serif;
+	font-weight:bold;
+	width:66%;
+	background-image:linear-gradient(rgb(255,255,255,.7),rgb(255,255,255,.7));
+	margin:auto;
+	top:50%;
+	left:50%;
+	position:absolute;
+	transform: translate(-50%, -50%);
+	padding:60px 20px 60px 20px;
+}
+.container{
+	margin:0 auto 0 auto;
+	font-family: 'Work Sans', sans-serif;
+	width:50vw;
+	display:flex;
+    flex-direction:column;
+	font-size:18px;
+	line-height:24px;
+}
+.list_title{
+	font-size:30px;
+	font-weight:bold;
+	margin-top:20px;
+}
+.link{
+	margin-top:40px;
+}
+a:link{
+	color:#42b4d6;
+}

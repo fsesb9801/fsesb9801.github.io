@@ -1,0 +1,100 @@
+/**
+ TODO(you): Write the CSS necessary to complete HW1!
+*/
+body{
+	margin:0px;
+}
+.head-image{
+	background-image:linear-gradient(rgba(0, 0, 0, .3),rgba(0, 0, 0, .3)),url("../images/header.jpg");
+	height:500px;
+	background-repeat:no-repeat;
+	background-position:center top;
+	background-size:cover;
+	width:1280px;
+	position:relative;
+	margin:auto;
+}
+.head-text{
+	font-family: "Roboto Slab", serif;
+	text-align:center;
+	top:50%;
+	left:50%;
+	font-size:36px;
+	font-weight:normal;
+	color:white;
+	position:absolute;
+	max-width:780px;
+	transform: translate(-50%, -50%);
+}
+.profile_pic{
+	border-radius:100%;
+	height:100px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	top:450px;
+	position:relative;
+	border:1px solid white;
+}
+.profile{
+	font-family:"Source Sans Pro","sans-serif";
+	font-size:18px;
+	color:rgb(51,51,51);
+	line-height:24px;
+	text-align:center;
+	top:455px;
+	position:inherit;
+}
+#author{
+	font-weight:bold;
+}
+#stat{
+	font-style:italic;
+}
+.line{
+	background-color:#e6e6e6;
+	height:2px;
+	margin:10px auto 0 auto;
+	width:190px;
+}
+.container{
+	top:117px;
+	position:relative;
+	text-align:center;
+}
+.article{
+	position:inherit;
+	margin:60px auto 60px auto;
+	text-align:left;
+	width:66%;
+	display:inline-grid;
+}
+.article_num{
+	font-family: "Roboto Slab", serif;
+	font-size:36px;
+	font-weight:bold;
+	color:rgb(0,0,0,.25);
+	padding-right:40px;
+}
+.article_title{
+	font-family: "Roboto Slab", serif;
+	font-size:36px;
+	font-weight:bold;
+	color:rgb(51,51,51);
+}
+.article a:link{
+	text-decoration:none;
+	color:#42b4d6;
+}
+.separator{
+	height:20px;
+}
+.paragraph{
+	font-family:"Source Sans Pro","sans-serif";
+	font-size:18px;
+	line-height:32px;
+	color:rgb(51,51,51);
+}
+.p_pic{
+	width:100%;
+}
