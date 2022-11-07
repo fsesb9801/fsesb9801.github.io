@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>就是個轉盤</title>
+    <script src="d3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="test.min.js"></script>
+    <style>
+        body{
+            padding: 5vh 5vw 0px 5vw;
+            margin:0px;
+            font-family:Helvetica, Arial, sans-serif;
+        }
+        text{
+            font-size:12px;
+            pointer-events:none;
+        }
+        img{
+            width: 32px;
+            height: 32px;
+            margin-left: 16px;
+            display: inline-block;
+        }
+        #top{
+            position: absolute;
+            height: 4vh;
+            font-size: 4vh;
+            top: 0px;
+            left: 11vw;
+        }
+        #top img{
+            width: 4vh !important;
+            height: 4vh !important;
+        }
+        #chart{
+            display: inline-block;
+            width:500px;
+            height:500px;
+            top:0px;
+            left:0px;
+            vertical-align: top;
+        }
+        #container{
+            display: inline-block;
+            width:400px;
+            height:500px;
+            vertical-align: top;
+        }
+        .class_id{
+            margin-left: 16px !important;
+        }
+        .class_mul{
+            width: 32px !important;
+            text-align: center !important;
+        }
+        .class_mul,.class_id{
+            height: 32px;
+            vertical-align: top;
+            border-radius: 10px;
+            line-height: 32px;
+            font-size: 16px;
+            width: 250px;
+        }
+        #copyright{
+            opacity: .1;
+            bottom: 0px;
+            width:80vw;
+            font-size: 6px;
+            position: sticky;
+            z-index: -999;
+        }
+    </style>
+</head>
+<body>
+    <span id="top">訂閱狼肉但剎奔要一百二<img src="tap.gif" alt=""></span>
+    <div id="chart"></div>
+    <div id="container">
+        <img src="add.png" width="" height="" id="add_row" alt="">
+        <img src="trash.png" width="" height="" id="clear_all" alt="">
+    </div>
+    <div id="copyright">
+        Copyright (c) 2022 by Sumesh KP (https://codepen.io/sumeshkp18/pen/VGBPYg)
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.        
+    </div>
+</body>
+</html>
