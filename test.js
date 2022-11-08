@@ -180,8 +180,8 @@ function spin(d){
               
                     // Get the result value from object "data" 
         //console.log(data[picked])
-              
-                    // Comment the below line for restrict spin to sngle time 
+        document.getElementById('picked').innerText=' '+data[picked]
+                            // Comment the below line for restrict spin to sngle time 
         container.on("click", spin);
     });
 }
