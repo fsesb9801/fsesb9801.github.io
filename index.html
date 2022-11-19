@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>就是個轉盤</title>
     <script src="d3.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="test.min.js"></script>
+    <script type="text/javascript" src="test.js"></script>
     <style>
         body{
             padding: 5vh 5vw 0px 5vw;
             margin:0px;
             font-family:Helvetica, Arial, sans-serif;
+            background-color: #222;
+            color: white;
         }
         text{
             font-size:12px;
@@ -23,36 +25,77 @@
             margin-left: 16px;
             display: inline-block;
         }
-        #top{
+        #ip_xp{
+            display: inline-block;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-top: 5vh;
+        }
+        #overlay{
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            z-index: 1;
+            text-align: center;
+            backdrop-filter: blur(100px);
+            opacity: 1;
+            transition: opacity 1s;
+        }
+        #overlay.hidden{
+            opacity: 0;
+        }
+        #overlay_text{
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+        }
+        #overlay #img1{
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: unset;
+            height: unset;
+        }
+        #overlay img{
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: unset;
+            height: unset;
+        }
+        #title_text{
             position: absolute;
             height: 4vh;
             font-size: 3vh;
-            top: 0px;
+            top: 1vh;
             left: 11vw;
-        }
-        #top img{
-            width: 4vh !important;
-            height: 4vh !important;
+            border-radius: 10px;
         }
         #chart{
-            display: inline-block;
-            width:500px;
-            height:500px;
+            width:50vw;
+            height:50vh;
             top:0px;
             left:0px;
             vertical-align: top;
+            display: inline-block;
         }
         #container{
-            display: inline-block;
-            width:500px;
-            height:500px;
+            width:80vw;
+            height:35vh;
             vertical-align: top;
         }
         .class_id{
             margin-left: 16px !important;
         }
         .class_mul{
-            width: 32px !important;
+            width: 40px !important;
             text-align: center !important;
         }
         .class_mul,.class_id{
@@ -62,6 +105,13 @@
             line-height: 32px;
             font-size: 16px;
             width: 250px;
+        }
+        .row img{
+            vertical-align:sub;
+        }
+        .row_text{
+            font-size: 32px;
+            line-height: 32px;
         }
         #copyright{
             opacity: .1;
@@ -74,11 +124,15 @@
     </style>
 </head>
 <body>
-    <span id="top">訂閱狼肉但剎奔要一百二<img src="tap.gif" alt="">:<span id="picked"></span></span>
+    <div id="overlay"><img id="img1" src="tap.gif" alt=""><div id="overlay_text">訂閱狼肉但剎奔要一百二</div><img src="tap.gif" alt=""></div>
+    <input id="title_text" type="text" placeholder="標題"></span>
     <div id="chart"></div>
+    <textarea name="" id="ip_xp" cols="20" rows="25"></textarea>
     <div id="container">
         <img src="add.png" width="" height="" id="add_row" alt="">
         <img src="trash.png" width="" height="" id="clear_all" alt="">
+        <img src="import.png" width="" height="" id="import" alt="">
+        <img src="export.png" width="" height="" id="export" alt="">
     </div>
     <div id="copyright">
         Copyright (c) 2022 by Sumesh KP (https://codepen.io/sumeshkp18/pen/VGBPYg)

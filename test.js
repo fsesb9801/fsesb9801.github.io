@@ -1,39 +1,140 @@
 'use strict'
+
+/*---------------------------
+TODO:
+
+-----------------------------*/
+
 let onload=()=>{
-    document.getElementById('add_row').addEventListener('click',()=>{
+
+    document.getElementById('title_text').addEventListener('change',()=>{
+        document.title='就是個轉盤-'+document.getElementById('title_text').value
+    })
+
+    let new_row=(e,id='',m0=0,m1=0,m2=0)=>{
         let row=document.createElement('div')
         row.classList.add('row')
+        //add del row button
         let del_btn=document.createElement('img')
         del_btn.src='remove.png'
         del_btn.width='32px'
         del_btn.height='32px'
         del_btn.addEventListener('click',delete_row)
         row.appendChild(del_btn)
+        //add twitch id field
         let id_input=document.createElement('input')
         id_input.type='text'
+        id_input.placeholder='圖奇ID'
         id_input.classList.add('class_id')
+        id_input.value=id
         id_input.addEventListener('change',update)
         row.appendChild(id_input)
+
         let x_char=document.createElement('span')
-        x_char.innerText=' X '
+        x_char.innerText=' x (斗內加成:'
+        x_char.classList.add('row_text')
         row.appendChild(x_char)
+        //add multipiler field
         let mul_input=document.createElement('input')
         mul_input.type='number'
-        mul_input.value=1
-        mul_input.min='1'
+        mul_input.value=m0
+        mul_input.min='0'
         mul_input.classList.add('class_mul')
         mul_input.addEventListener('change',update)
         row.appendChild(mul_input)
+
+        x_char=document.createElement('span')
+        x_char.innerText=' + 點數加成:'
+        x_char.classList.add('row_text')
+        row.appendChild(x_char)
+        //add multipiler field
+        mul_input=document.createElement('input')
+        mul_input.type='number'
+        mul_input.value=m1
+        mul_input.min='0'
+        mul_input.classList.add('class_mul')
+        mul_input.addEventListener('change',update)
+        row.appendChild(mul_input)
+
+        x_char=document.createElement('span')
+        x_char.innerText=' + 特殊加成:'
+        x_char.classList.add('row_text')
+        row.appendChild(x_char)
+        //add multipiler field
+        mul_input=document.createElement('input')
+        mul_input.type='number'
+        mul_input.value=m2
+        mul_input.min='0'
+        mul_input.classList.add('class_mul')
+        mul_input.addEventListener('change',update)
+        row.appendChild(mul_input)
+        x_char=document.createElement('span')
+        x_char.innerText=' ) '
+        x_char.classList.add('row_text')
+        row.appendChild(x_char)
+
         document.getElementById('container').appendChild(row)
         update()
-    })
+    }
+
+    document.getElementById('add_row').addEventListener('click',new_row)
     
     document.getElementById('clear_all').addEventListener('click',()=>{
         let rows=document.getElementsByClassName('row')
         for(let i=rows.length-1;i>=0;i--)
             rows[i].remove()
-        let click=new Event('click')
-        document.getElementById('add_row').dispatchEvent(click)
+        new_row()
+    })
+    document.getElementById('import').addEventListener('click',()=>{
+        //import stuff
+        //merge same row if possible
+        let id_es=document.getElementsByClassName('class_id')
+        let mul_es=document.getElementsByClassName('class_mul')
+        let ids=[]
+        for(let i=0,l=id_es.length;i<l;i++)
+            ids.push(id_es[i].value)
+        let imp=document.getElementById('ip_xp').value.split('\n')
+        for(let i=0,l=imp.length;i<l;i++){
+            let row=imp[i].split(',')
+            if(row.length!==4)
+                continue
+            if(ids.indexOf(row[0])!==-1){ //duplicate id
+                let idx=ids.indexOf(row[0])
+                let r1=isNaN(row[1])?0:row[1]
+                mul_es[3*idx].value=parseInt(mul_es[3*idx].value)+parseInt(r1)
+                let r2=isNaN(row[2])?0:row[2]
+                mul_es[3*idx+1].value=parseInt(mul_es[3*idx+1].value)+parseInt(r2)
+                let r3=isNaN(row[3])?0:row[3]
+                mul_es[3*idx+2].value=parseInt(mul_es[3*idx+2].value)+parseInt(r3)
+                update()
+            }
+            else{ //new id
+                new_row(null,row[0],row[1],row[2],row[3])
+            }
+        }
+    })
+
+    document.getElementById('export').addEventListener('click',()=>{
+        //export stuff
+        let exp_str=''
+        let id_es=document.getElementsByClassName('class_id')
+        let mul_es=document.getElementsByClassName('class_mul')
+        for(let i=0,l=id_es.length;i<l;i++){
+            let id=(id_es[i].value)
+            let mul0=parseInt(mul_es[3*i].value)
+            mul0=isNaN(mul0)?0:mul0
+            let mul1=parseInt(mul_es[3*i+1].value)
+            mul1=isNaN(mul1)?0:mul1
+            let mul2=parseInt(mul_es[3*i+2].value)
+            mul2=isNaN(mul2)?0:mul2
+            exp_str+=(id+','+mul0.toString()+','+mul1.toString()+','+mul2.toString()+'\n')
+        }
+        console.log(exp_str);
+        document.getElementById('ip_xp').value=exp_str
+        /*
+        aaa,1,2,3
+        bbb,5,7,8
+        */
     })
 
     let delete_row=e=>{
@@ -49,8 +150,14 @@ let onload=()=>{
         let mul_es=document.getElementsByClassName('class_mul')
         for(let i=0,l=id_es.length;i<l;i++){
             let id=(id_es[i].value)
-            let mul=parseInt(mul_es[i].value)
-            if(mul<1)
+            let mul0=parseInt(mul_es[3*i].value)
+            mul0=isNaN(mul0)?0:mul0
+            let mul1=parseInt(mul_es[3*i+1].value)
+            mul1=isNaN(mul1)?0:mul1
+            let mul2=parseInt(mul_es[3*i+2].value)
+            mul2=isNaN(mul2)?0:mul2
+            let mul=1+mul0+mul1+mul2
+            if(mul<1||isNaN(mul))
                 mul=1
             for(let j=0;j<mul;j++)
                 data.push(id)
@@ -64,16 +171,16 @@ let onload=()=>{
 //----------------------------------------------------SPINNING PART----------------------------------------------------//
 const MAX_ROT=15
 const MIN_ROT=8
-
+let LENGTH=window.innerWidth<window.innerHeight?window.innerWidth:window.innerHeight
 
 var padding = {top:20, right:40, bottom:0, left:0},
-            w = 500 - padding.left - padding.right,
-            h = 500 - padding.top  - padding.bottom,
+            w = .5*(LENGTH - padding.left - padding.right),
+            h = .5*(LENGTH - padding.top  - padding.bottom),
             r = Math.min(w, h)/2,
             rotation = 0,
             oldrotation = 0,
             picked = 100000,
-            color = d3.scaleOrdinal(d3.schemeSet3) //category20c()
+            color = d3.scaleOrdinal(d3.schemeTableau10) //category20c()
             //randomNumbers = getRandomNumbers();
             //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
 var data = [''];
@@ -129,7 +236,7 @@ let draw=()=>{
         .attr("transform", "translate(" + (w + padding.left + padding.right) + "," + ((h/2)+padding.top) + ")")
         .append("path")
         .attr("d", "M-" + (r*.15) + ",0L0," + (r*.05) + "L0,-" + (r*.05) + "Z")
-        .style("fill","black");
+        .style("fill","white");
     container.append("circle") //draw spin circle
         .attr("cx", 0)
         .attr("cy", 0)
@@ -148,6 +255,14 @@ window.addEventListener('DOMContentLoaded',()=>{
     onload()
     let click=new Event('click')
     document.getElementById('add_row').dispatchEvent(click)
+    document.getElementById('overlay').addEventListener('click',()=>{
+        document.getElementById('overlay').classList.add('hidden')
+        setTimeout(() => {
+            let e=document.getElementById('overlay')
+            e.style.display='none'
+            e.classList.remove('hidden')
+        }, 1010);
+    })
 })
 function spin(d){            
     container.on("click", null);
@@ -161,6 +276,7 @@ function spin(d){
     var ps = 360/data.length,
     //pieslice = Math.round(1800/data.length),
     rng = (getRandomNumbers())[Math.floor(Math.random()*10)]%(Math.abs(MAX_ROT-MIN_ROT)*360)+MIN_ROT*360//Math.floor((Math.random() * 1440) + 360);
+    //console.log(rng);
     rotation = (Math.round(rng / ps) * ps);
     //console.log(rng);
     picked = Math.round(data.length - (rotation % 360)/ps);
@@ -168,7 +284,8 @@ function spin(d){
             
     rotation += 90 - Math.round(ps/2);
     vis.transition()
-        .duration(3000)
+        .ease(d3.easeExpOut)
+        .duration(5000)
         .attrTween("transform", rotTween)
         .on("end",()=>{
                     //mark question as seen
@@ -179,8 +296,10 @@ function spin(d){
         oldrotation = rotation;
               
                     // Get the result value from object "data" 
-        //console.log(data[picked])
-        document.getElementById('picked').innerText=' '+data[picked]
+        console.log(data[picked])
+        document.getElementById('overlay_text').innerText=data[picked]
+        document.getElementById('overlay').style.display='block'
+
                             // Comment the below line for restrict spin to sngle time 
         container.on("click", spin);
     });
