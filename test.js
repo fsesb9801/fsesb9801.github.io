@@ -171,6 +171,8 @@ let onload=()=>{
             for(let j=0;j<mul;j++)
                 data.push(id)
         }
+        if(data.indexOf('')<0)
+            new_row()
         document.getElementById('chart').children[0].remove()
         draw()
     }
@@ -315,8 +317,11 @@ function spin(d){
         oldrotation = rotation;
               
                     // Get the result value from object "data" 
-        console.log(data[picked])
-        document.getElementById('overlay_text').innerText=data[picked]
+        //console.log(data[picked])
+        if(data[picked].length===0)
+            document.getElementById('overlay_text').innerText='再轉一次'
+        else
+            document.getElementById('overlay_text').innerText=data[picked]
         document.getElementById('overlay').style.display='block'
 
                             // Comment the below line for restrict spin to sngle time 
