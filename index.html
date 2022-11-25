@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>就是個轉盤</title>
+    <link rel="icon" href="/favicon.ico">
     <script src="d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="test.js"></script>
     <style>
@@ -26,10 +27,11 @@
             display: inline-block;
         }
         #ip_xp{
-            display: inline-block;
+            display: none;
             border-radius: 10px;
             font-size: 16px;
             margin-top: 5vh;
+            margin-left: 60px;
         }
         #overlay{
             top: 0px;
@@ -72,15 +74,16 @@
         }
         #title_text{
             position: absolute;
-            height: 4vh;
-            font-size: 3vh;
-            top: 1vh;
-            left: 11vw;
+            width: 360px;
+            height: 36px;
+            font-size: 32px;
+            top: 2vh;
+            left: calc( 5vw + 100px );
             border-radius: 10px;
         }
         #chart{
-            width:50vw;
-            height:50vh;
+            width:600px;
+            height:600px;
             top:0px;
             left:0px;
             vertical-align: top;
@@ -90,6 +93,7 @@
             width:80vw;
             height:35vh;
             vertical-align: top;
+            margin-top: 40px;
         }
         .class_id{
             margin-left: 16px !important;
@@ -113,13 +117,17 @@
             font-size: 32px;
             line-height: 32px;
         }
+        .row{
+            margin-top: 4px;
+        }
         #copyright{
-            opacity: .1;
-            bottom: 0px;
+            opacity: .05;
+            top: 90vh;
             width:80vw;
             font-size: 6px;
-            position: sticky;
+            position: absolute;
             z-index: -999;
+            user-select: none;
         }
     </style>
 </head>
@@ -127,12 +135,13 @@
     <div id="overlay"><img id="img1" src="tap.gif" alt=""><div id="overlay_text">訂閱狼肉但剎奔要一百二</div><img src="tap.gif" alt=""></div>
     <input id="title_text" type="text" placeholder="標題"></span>
     <div id="chart"></div>
-    <textarea name="" id="ip_xp" cols="20" rows="25"></textarea>
+    <textarea name="" id="ip_xp" placeholder="ID,加成1,加成2,加成3" cols="20" rows="25"></textarea>
     <div id="container">
         <img src="add.png" width="" height="" id="add_row" alt="">
         <img src="trash.png" width="" height="" id="clear_all" alt="">
         <img src="import.png" width="" height="" id="import" alt="">
         <img src="export.png" width="" height="" id="export" alt="">
+        <img src="random.png" width="" height="" id="random" alt="">
     </div>
     <div id="copyright">
         Copyright (c) 2022 by Sumesh KP (https://codepen.io/sumeshkp18/pen/VGBPYg)

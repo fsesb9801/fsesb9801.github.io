@@ -88,6 +88,11 @@ let onload=()=>{
     document.getElementById('import').addEventListener('click',()=>{
         //import stuff
         //merge same row if possible
+        if(!showipxp){
+            document.getElementById('ip_xp').style.display='inline-block'
+            showipxp=true
+            return
+        }
         let id_es=document.getElementsByClassName('class_id')
         let mul_es=document.getElementsByClassName('class_mul')
         let ids=[]
@@ -116,6 +121,10 @@ let onload=()=>{
 
     document.getElementById('export').addEventListener('click',()=>{
         //export stuff
+        if(!showipxp){
+            document.getElementById('ip_xp').style.display='inline-block'
+            showipxp=true
+        }
         let exp_str=''
         let id_es=document.getElementsByClassName('class_id')
         let mul_es=document.getElementsByClassName('class_mul')
@@ -165,17 +174,27 @@ let onload=()=>{
         document.getElementById('chart').children[0].remove()
         draw()
     }
+
+    document.getElementById('random').addEventListener('click',()=>{
+        //shuffle list
+        for (let l=data.length-1;l>0;l--) {
+            let j=Math.floor(Math.random()*(l+1));
+            [data[l], data[j]] = [data[j], data[l]];
+        }
+        document.getElementById('chart').children[0].remove()
+        draw()
+    })
 }
 
 
 //----------------------------------------------------SPINNING PART----------------------------------------------------//
 const MAX_ROT=15
 const MIN_ROT=8
-let LENGTH=window.innerWidth<window.innerHeight?window.innerWidth:window.innerHeight
+let showipxp=false
 
 var padding = {top:20, right:40, bottom:0, left:0},
-            w = .5*(LENGTH - padding.left - padding.right),
-            h = .5*(LENGTH - padding.top  - padding.bottom),
+            w = 600 - padding.left - padding.right,
+            h = 600 - padding.top  - padding.bottom,
             r = Math.min(w, h)/2,
             rotation = 0,
             oldrotation = 0,
