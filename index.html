@@ -27,7 +27,7 @@
             display: inline-block;
         }
         #ip_xp{
-            display: none;
+            /*display: none;*/
             border-radius: 10px;
             font-size: 16px;
             margin-top: 5vh;
@@ -36,11 +36,12 @@
         #overlay{
             top: 0px;
             left: 0px;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             position: absolute;
             z-index: 1;
             text-align: center;
+            -webkit-backdrop-filter: blur(100px);
             backdrop-filter: blur(100px);
             opacity: 1;
             transition: opacity 1s;
@@ -58,19 +59,32 @@
         }
         #overlay #img1{
             position: absolute;
-            top: 40%;
+            top: 39%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: unset;
             height: unset;
+            margin: 0px;
         }
         #overlay img{
             position: absolute;
-            top: 58%;
+            top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: unset;
             height: unset;
+            margin: 0px;
+        }
+        #remove_pick{
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            background-color: black;
+            border-radius: 5px;
+            padding: 5px 12px;
+            display: none;
         }
         #title_text{
             position: absolute;
@@ -91,7 +105,7 @@
         }
         #container{
             width:80vw;
-            height:35vh;
+            height:25vh;
             vertical-align: top;
             margin-top: 40px;
         }
@@ -127,15 +141,21 @@
             font-size: 6px;
             position: absolute;
             z-index: -999;
+            -webkit-user-select: none;
             user-select: none;
         }
     </style>
 </head>
 <body>
-    <div id="overlay"><img id="img1" src="tap.gif" alt=""><div id="overlay_text">訂閱狼肉但剎奔要一百二</div><img src="tap.gif" alt=""></div>
+    <div id="overlay">
+        <img id="img1" src="tap.gif" alt="">
+        <div id="overlay_text">訂閱狼肉但剎奔要一百二</div>
+        <img src="tap.gif" alt="">
+        <span id="remove_pick">移除按這裡</span>
+    </div>
     <input id="title_text" type="text" placeholder="標題"></span>
     <div id="chart"></div>
-    <textarea name="" id="ip_xp" placeholder="ID,加成1,加成2,加成3" cols="20" rows="25"></textarea>
+    <textarea name="" id="ip_xp" placeholder="ID,加成1,加成2,加成3" cols="32" rows="27"></textarea>
     <div id="container">
         <img src="add.png" width="" height="" id="add_row" alt="">
         <img src="trash.png" width="" height="" id="clear_all" alt="">

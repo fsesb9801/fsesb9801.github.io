@@ -101,8 +101,10 @@ let onload=()=>{
         let imp=document.getElementById('ip_xp').value.split('\n')
         for(let i=0,l=imp.length;i<l;i++){
             let row=imp[i].split(',')
-            if(row.length!==4)
+            if(row.length!==4){ //import without multipiler
+                new_row(null,row[0],0,0,0)
                 continue
+            }
             if(ids.indexOf(row[0])!==-1){ //duplicate id
                 let idx=ids.indexOf(row[0])
                 let r1=isNaN(row[1])?0:row[1]
@@ -117,6 +119,8 @@ let onload=()=>{
                 new_row(null,row[0],row[1],row[2],row[3])
             }
         }
+        remove_id('')
+        update()
     })
 
     document.getElementById('export').addEventListener('click',()=>{
@@ -177,7 +181,7 @@ let onload=()=>{
         draw()
     }
 
-    document.getElementById('random').addEventListener('click',()=>{
+    let shuffle=()=>{
         //shuffle list
         for (let l=data.length-1;l>0;l--) {
             let j=Math.floor(Math.random()*(l+1));
@@ -185,6 +189,21 @@ let onload=()=>{
         }
         document.getElementById('chart').children[0].remove()
         draw()
+    }
+    document.getElementById('random').addEventListener('click',shuffle)
+
+    let remove_id=id=>{
+        let ids=document.getElementsByClassName('class_id')
+        for(let i=ids.length-1;i>=0;i--) {
+            if(ids[i].value===id){
+                ids[i].parentElement.remove()
+            }
+        }
+    }
+    document.getElementById('remove_pick').addEventListener('click',()=>{
+        let pickedid=data[picked]
+        remove_id(pickedid)
+        update()
     })
 }
 
@@ -192,18 +211,19 @@ let onload=()=>{
 //----------------------------------------------------SPINNING PART----------------------------------------------------//
 const MAX_ROT=15
 const MIN_ROT=8
-let showipxp=false
+const RAND_ARRSIZE=20
+let showipxp=true
 
 var padding = {top:20, right:40, bottom:0, left:0},
-            w = 600 - padding.left - padding.right,
-            h = 600 - padding.top  - padding.bottom,
-            r = Math.min(w, h)/2,
-            rotation = 0,
-            oldrotation = 0,
-            picked = 100000,
-            color = d3.scaleOrdinal(d3.schemeTableau10) //category20c()
-            //randomNumbers = getRandomNumbers();
-            //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
+    w = 600 - padding.left - padding.right,
+    h = 600 - padding.top  - padding.bottom,
+    r = Math.min(w, h)/2,
+    rotation = 0,
+    oldrotation = 0,
+    picked = 100000,
+    color = d3.scaleOrdinal(d3.schemeTableau10) //category20c()
+    //randomNumbers = getRandomNumbers();
+    //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
 var data = [''];
 var svg
 var container
@@ -277,6 +297,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     let click=new Event('click')
     document.getElementById('add_row').dispatchEvent(click)
     document.getElementById('overlay').addEventListener('click',()=>{
+        document.getElementById('remove_pick').style.display='none'
         document.getElementById('overlay').classList.add('hidden')
         setTimeout(() => {
             let e=document.getElementById('overlay')
@@ -296,7 +317,7 @@ function spin(d){
             }*/
     var ps = 360/data.length,
     //pieslice = Math.round(1800/data.length),
-    rng = (getRandomNumbers())[Math.floor(Math.random()*10)]%(Math.abs(MAX_ROT-MIN_ROT)*360)+MIN_ROT*360//Math.floor((Math.random() * 1440) + 360);
+    rng = (getRandomNumbers())[Math.floor(Math.random()*RAND_ARRSIZE)]%(Math.abs(MAX_ROT-MIN_ROT)*360)+MIN_ROT*360//Math.floor((Math.random() * 1440) + 360);
     //console.log(rng);
     rotation = (Math.round(rng / ps) * ps);
     //console.log(rng);
@@ -320,8 +341,11 @@ function spin(d){
         //console.log(data[picked])
         if(data[picked].length===0)
             document.getElementById('overlay_text').innerText='再轉一次'
-        else
+        else {
+            document.getElementById('remove_pick').style.display='inline';
             document.getElementById('overlay_text').innerText=data[picked]
+            
+        }
         document.getElementById('overlay').style.display='block'
 
                             // Comment the below line for restrict spin to sngle time 
@@ -338,14 +362,14 @@ function rotTween(to) {
         
         
 function getRandomNumbers(){
-    var array = new Uint16Array(10);
+    var array = new Uint16Array(RAND_ARRSIZE);
     //var scale = d3.scaleLinear().range([MIN_ROT*360, MAX_ROT*360]).domain([0, 100000]);
     if(window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function"){
         window.crypto.getRandomValues(array);
         //console.log("works");
     } else {
                 //no support for crypto, get crappy random numbers
-        for(var i=0; i < 10; i++){
+        for(var i=0; i < RAND_ARRSIZE; i++){
             array[i] = Math.floor(Math.random() * 100000) + 1;
         }
     }
