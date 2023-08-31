@@ -177,12 +177,9 @@ let onload=()=>{
         }
         if(data.indexOf('')<0)
             new_row()
-        document.getElementById('chart').children[0].remove()
-        draw()
-    }
-
-    let shuffle=()=>{
-        //shuffle list
+        
+        if(data.length<=2)
+            return
         for (let l=data.length-1;l>0;l--) {
             let j=Math.floor(Math.random()*(l+1));
             [data[l], data[j]] = [data[j], data[l]];
@@ -190,7 +187,7 @@ let onload=()=>{
         document.getElementById('chart').children[0].remove()
         draw()
     }
-    document.getElementById('random').addEventListener('click',shuffle)
+    //document.getElementById('random').addEventListener('click',shuffle)
 
     let remove_id=id=>{
         let ids=document.getElementsByClassName('class_id')
@@ -207,11 +204,22 @@ let onload=()=>{
     })
 }
 
+/*let shuffle=()=>{
+    //shuffle list
+    if(data.length<=2)
+        return
+    for (let l=data.length-1;l>0;l--) {
+        let j=Math.floor(Math.random()*(l+1));
+        [data[l], data[j]] = [data[j], data[l]];
+    }
+    document.getElementById('chart').children[0].remove()
+    draw()
+}*/
 
 //----------------------------------------------------SPINNING PART----------------------------------------------------//
 const MAX_ROT=15
-const MIN_ROT=8
-const RAND_ARRSIZE=20
+const MIN_ROT=6
+const RAND_ARRSIZE=32
 let showipxp=true
 
 var padding = {top:20, right:40, bottom:0, left:0},
@@ -289,7 +297,7 @@ let draw=()=>{
         .attr("text-anchor", "middle")
         .text("SPIN")
         .attr('style',"font-weight:bold; font-size:30px;fill:white;");
-    container.on("click", spin);   
+    container.on("click", spin);
 }
 window.addEventListener('DOMContentLoaded',()=>{
     draw()
@@ -306,8 +314,8 @@ window.addEventListener('DOMContentLoaded',()=>{
         }, 1010);
     })
 })
-function spin(d){            
-    container.on("click", null);
+function spin(d){
+    container.on("click", null);    
             //all slices have been seen, all done
             //console.log("OldPick: " + oldpick.length, "Data length: " + data.length);
             /*if(oldpick.length == data.length){
@@ -315,9 +323,14 @@ function spin(d){
                 container.on("click", null);
                 return;
             }*/
-    var ps = 360/data.length,
+    var ps = 360/data.length
     //pieslice = Math.round(1800/data.length),
-    rng = (getRandomNumbers())[Math.floor(Math.random()*RAND_ARRSIZE)]%(Math.abs(MAX_ROT-MIN_ROT)*360)+MIN_ROT*360//Math.floor((Math.random() * 1440) + 360);
+    var index=null
+    if(window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function")
+        index=Math.floor(window.crypto.getRandomValues(new Uint16Array(1))[0]/0xffff*RAND_ARRSIZE)
+    else
+        index=Math.floor(Math.random()*RAND_ARRSIZE)
+    var rng = (getRandomNumbers())[index]%(Math.abs(MAX_ROT-MIN_ROT)*360)+MIN_ROT*360//Math.floor((Math.random() * 1440) + 360);
     //console.log(rng);
     rotation = (Math.round(rng / ps) * ps);
     //console.log(rng);
@@ -325,9 +338,13 @@ function spin(d){
     picked = picked >= data.length ? (picked % data.length) : picked;
             
     rotation += 90 - Math.round(ps/2);
+
+    let easeAnim=[d3.easeBackOut.overshoot(.4),d3.easeExpOut,d3.easeCircleOut,d3.easeElasticOut]
+    let anim=Math.floor(Math.random()*easeAnim.length)
+
     vis.transition()
-        .ease(d3.easeExpOut)
-        .duration(5000)
+        .ease(easeAnim[anim])
+        .duration(4000+Math.random()*3000)
         .attrTween("transform", rotTween)
         .on("end",()=>{
                     //mark question as seen
@@ -339,15 +356,16 @@ function spin(d){
               
                     // Get the result value from object "data" 
         //console.log(data[picked])
-        if(data[picked].length===0)
-            document.getElementById('overlay_text').innerText='再轉一次'
-        else {
-            document.getElementById('remove_pick').style.display='inline';
-            document.getElementById('overlay_text').innerText=data[picked]
-            
+        if(data.length>1){
+            if(data[picked].length===0)
+                document.getElementById('overlay_text').innerText='再轉一次'
+            else {
+                document.getElementById('remove_pick').style.display='inline';
+                document.getElementById('overlay_text').innerText=data[picked]
+                
+            }
+            document.getElementById('overlay').style.display='block'
         }
-        document.getElementById('overlay').style.display='block'
-
                             // Comment the below line for restrict spin to sngle time 
         container.on("click", spin);
     });
