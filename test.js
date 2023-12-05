@@ -84,6 +84,7 @@ let onload=()=>{
         for(let i=rows.length-1;i>=0;i--)
             rows[i].remove()
         new_row()
+        update()
     })
     document.getElementById('import').addEventListener('click',()=>{
         //import stuff
@@ -177,9 +178,6 @@ let onload=()=>{
         }
         if(data.indexOf('')<0)
             new_row()
-        
-        if(data.length<=2)
-            return
         for (let l=data.length-1;l>0;l--) {
             let j=Math.floor(Math.random()*(l+1));
             [data[l], data[j]] = [data[j], data[l]];
