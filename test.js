@@ -5,6 +5,13 @@ TODO:
 
 -----------------------------*/
 
+const PRESETS={
+    takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
+    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:10},],
+}
+const PRESET_RAND_BASE=10
+const PRESET_RAND_VAR=89
+
 let onload=()=>{
 
     document.getElementById('title_text').addEventListener('change',()=>{
@@ -200,6 +207,28 @@ let onload=()=>{
         remove_id(pickedid)
         update()
     })
+
+    
+    document.getElementById('presets').addEventListener('change',()=>{
+        let sel_value=document.getElementById('presets').value
+        document.getElementById('clear_all').dispatchEvent(new Event('click'))
+        document.getElementById('ip_xp').value=''
+        if(sel_value.length){
+            if(PRESETS[sel_value]===undefined){
+                return
+            }
+            let list=PRESETS[sel_value]
+            let result=''
+            for(let i=0;i<list.length;i++){
+                let multi=list[i].multi
+                if(multi===-1) //-1 means random num
+                    multi=PRESET_RAND_BASE+Math.floor(Math.random()*PRESET_RAND_VAR)
+                result+=(list[i].name+',0,0,'+multi+'\n')
+            }
+            document.getElementById('ip_xp').value=result
+            document.getElementById('import').dispatchEvent(new Event('click'))
+        }
+    })
 }
 
 /*let shuffle=()=>{
@@ -214,10 +243,13 @@ let onload=()=>{
     draw()
 }*/
 
+
 //----------------------------------------------------SPINNING PART----------------------------------------------------//
-const MAX_ROT=15
-const MIN_ROT=6
-const RAND_ARRSIZE=32
+const MAX_ROT=18
+const MIN_ROT=8
+const RAND_ARRSIZE=64
+const DURATION_BASE_MS=5000
+const DURATION_VAR_MS=3500
 let showipxp=true
 
 var padding = {top:20, right:40, bottom:0, left:0},
@@ -227,7 +259,7 @@ var padding = {top:20, right:40, bottom:0, left:0},
     rotation = 0,
     oldrotation = 0,
     picked = 100000,
-    color = d3.scaleOrdinal(d3.schemeTableau10) //category20c()
+    color = d3.scaleOrdinal(d3.schemeSet3) //category20c()
     //randomNumbers = getRandomNumbers();
     //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
 var data = [''];
@@ -300,8 +332,7 @@ let draw=()=>{
 window.addEventListener('DOMContentLoaded',()=>{
     draw()
     onload()
-    let click=new Event('click')
-    document.getElementById('add_row').dispatchEvent(click)
+    document.getElementById('add_row').dispatchEvent(new Event('click'))
     document.getElementById('overlay').addEventListener('click',()=>{
         document.getElementById('remove_pick').style.display='none'
         document.getElementById('overlay').classList.add('hidden')
@@ -342,7 +373,7 @@ function spin(d){
 
     vis.transition()
         .ease(easeAnim[anim])
-        .duration(4000+Math.random()*3000)
+        .duration(DURATION_BASE_MS+Math.random()*DURATION_VAR_MS)
         .attrTween("transform", rotTween)
         .on("end",()=>{
                     //mark question as seen

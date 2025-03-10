@@ -32,6 +32,7 @@
             font-size: 16px;
             margin-top: 5vh;
             margin-left: 60px;
+            width: 320px;
         }
         #overlay{
             top: 0px;
@@ -95,6 +96,15 @@
             left: calc( 5vw + 100px );
             border-radius: 10px;
         }
+        #presets{
+            position: absolute;
+            width: 326px;
+            height: 36px;
+            font-size: 28px;
+            top: 2vh;
+            margin-left: 666px;
+            border-radius: 10px;
+        }
         #chart{
             width:600px;
             height:600px;
@@ -138,7 +148,7 @@
             opacity: .05;
             top: 90vh;
             width:80vw;
-            font-size: 6px;
+            font-size: 8px;
             position: absolute;
             z-index: -999;
             -webkit-user-select: none;
@@ -153,9 +163,15 @@
         <img src="tap.gif" alt="">
         <span id="remove_pick">移除按這裡</span>
     </div>
-    <input id="title_text" type="text" placeholder="標題"></span>
+    <input id="title_text" type="text" placeholder="標題" />
+    <select id="presets">
+        <option value="">快速選項</option>
+        <option value="takeoff">脫衣(普通版)</option>
+        <option value="takeoff2">脫衣(刺激版)</option>
+        
+    </select>
     <div id="chart"></div>
-    <textarea name="" id="ip_xp" placeholder="ID,加成1,加成2,加成3" cols="32" rows="27"></textarea>
+    <textarea name="" id="ip_xp" placeholder="ID,加成1,加成2,加成3" rows="27"></textarea>
     <div id="container">
         <img src="add.png" width="" height="" id="add_row" alt="">
         <img src="trash.png" width="" height="" id="clear_all" alt="">
