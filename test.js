@@ -7,7 +7,7 @@ TODO:
 
 const PRESETS={
     takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:10},],
+    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'不脫',multi:10},{name:'再一次',multi:10},],
 }
 const PRESET_RAND_BASE=10
 const PRESET_RAND_VAR=89
