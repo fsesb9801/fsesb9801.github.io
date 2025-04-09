@@ -7,7 +7,7 @@ TODO:
 
 const PRESETS={
     takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'不脫',multi:10},{name:'再一次',multi:10},],
+    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:10},],
 }
 const PRESET_RAND_BASE=10
 const PRESET_RAND_VAR=89
@@ -213,16 +213,27 @@ let onload=()=>{
         let sel_value=document.getElementById('presets').value
         document.getElementById('clear_all').dispatchEvent(new Event('click'))
         document.getElementById('ip_xp').value=''
+        //start setting preset
         if(sel_value.length){
             if(PRESETS[sel_value]===undefined){
                 return
             }
             let list=PRESETS[sel_value]
+            
+            //special event
+            if(sel_value==="takeoff2"){ 
+                let chance=(getRandomNumbers())[0]%5
+                if(chance===0)
+                    list=[{name:'兔兔',multi:-1}]
+                else if(chance===1)
+                    list=[{name:'脫',multi:-1}]
+            }
+            
             let result=''
             for(let i=0;i<list.length;i++){
                 let multi=list[i].multi
                 if(multi===-1) //-1 means random num
-                    multi=PRESET_RAND_BASE+Math.floor(Math.random()*PRESET_RAND_VAR)
+                    multi=(getRandomNumbers())[0]%PRESET_RAND_VAR+PRESET_RAND_BASE
                 result+=(list[i].name+',0,0,'+multi+'\n')
             }
             document.getElementById('ip_xp').value=result
