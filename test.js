@@ -223,10 +223,17 @@ let onload=()=>{
             //special event
             if(sel_value==="takeoff2"){ 
                 let chance=(getRandomNumbers())[0]%5
-                if(chance===0)
-                    list=[{name:'兔兔',multi:-1}]
-                else if(chance===1)
+                if(chance===0){{
+                    list=[{name:'兔兔',multi:-1}]            
+                    document.getElementById('overlay_text').innerText='兔兔'
+                    document.getElementById('overlay').style.display='block'
+                }
+                }
+                else if(chance===1){
                     list=[{name:'脫',multi:-1}]
+                    document.getElementById('overlay_text').innerText='脫'
+                    document.getElementById('overlay').style.display='block'
+                }
             }
             
             let result=''
@@ -238,6 +245,7 @@ let onload=()=>{
             }
             document.getElementById('ip_xp').value=result
             document.getElementById('import').dispatchEvent(new Event('click'))
+            
         }
     })
 }
