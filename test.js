@@ -226,17 +226,17 @@ let onload=()=>{
                 switch (chance) {
                     case 0:
                         list=[{name:'兔兔',multi:-1}]            
-                        document.getElementById('overlay_text').innerText='兔兔'
+                        /*document.getElementById('overlay_text').innerText='兔兔'
                         setTimeout(() => {
                             document.getElementById('overlay').style.display='block'
-                        }, 50);
+                        }, 50);*/
                         break;                
                     case 1:        
                         list=[{name:'脫',multi:-1}]
-                        document.getElementById('overlay_text').innerText='脫'
+                        /*document.getElementById('overlay_text').innerText='脫'
                         setTimeout(() => {
                             document.getElementById('overlay').style.display='block'
-                        }, 50);
+                        }, 50);*/
                         break;
                     default:
                         break;
