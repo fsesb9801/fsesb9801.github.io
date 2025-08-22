@@ -87,6 +87,13 @@
             padding: 5px 12px;
             display: none;
         }
+        #autosave_time{
+            position: absolute;
+            top:0px;
+            left:8px;
+            color:gray;
+            display: none;
+        }
         #title_text{
             position: absolute;
             width: 360px;
@@ -157,15 +164,16 @@
     </style>
 </head>
 <body>
-    <div id="overlay">
+    <div id="overlay" style="display: none;"> <!--remember to remove style-->
         <img id="img1" src="tap.gif" alt="">
         <div id="overlay_text">訂閱白杓貂貂奔本鋪</div>
         <img src="tap.gif" alt="">
         <span id="remove_pick">移除按這裡</span>
     </div>
+    <div id="autosave_time"></div>
     <input id="title_text" type="text" placeholder="標題" />
     <select id="presets">
-        <option value="">快速選項</option>
+        <option value="">快速選項&自動存檔</option>
         <option value="takeoff">脫衣(普通版)</option>
         <option value="takeoff2">脫衣(刺激版)</option>
         
@@ -177,6 +185,7 @@
         <img src="trash.png" width="" height="" id="clear_all" alt="">
         <img src="import.png" width="" height="" id="import" alt="">
         <img src="export.png" width="" height="" id="export" alt="">
+        <input type="button" style="display: none;" id="local_save" value="Save"/>
         <!--img src="random.png" width="" height="" id="random" alt=""-->
     </div>
     <div id="copyright">

@@ -13,7 +13,6 @@ const PRESET_RAND_BASE=10
 const PRESET_RAND_VAR=89
 
 let onload=()=>{
-
     document.getElementById('title_text').addEventListener('change',()=>{
         document.title='就是個轉盤-'+document.getElementById('title_text').value
     })
@@ -93,7 +92,8 @@ let onload=()=>{
         new_row()
         update()
     })
-    document.getElementById('import').addEventListener('click',()=>{
+
+    let import_func=(exp_str='')=>{ //pass string for autosave
         //import stuff
         //merge same row if possible
         if(!showipxp){
@@ -106,7 +106,12 @@ let onload=()=>{
         let ids=[]
         for(let i=0,l=id_es.length;i<l;i++)
             ids.push(id_es[i].value)
-        let imp=document.getElementById('ip_xp').value.split('\n')
+        let imp=[]
+        if(!exp_str.length)
+            imp=document.getElementById('ip_xp').value.split('\n')
+        else{
+            imp=exp_str.split('\n')
+        }
         for(let i=0,l=imp.length;i<l;i++){
             let row=imp[i].split(',')
             if(row.length!==4){ //import without multipiler
@@ -129,9 +134,9 @@ let onload=()=>{
         }
         remove_id('')
         update()
-    })
+    }
 
-    document.getElementById('export').addEventListener('click',()=>{
+    let export_func=do_show=>{ //false for autosave
         //export stuff
         if(!showipxp){
             document.getElementById('ip_xp').style.display='inline-block'
@@ -150,14 +155,76 @@ let onload=()=>{
             mul2=isNaN(mul2)?0:mul2
             exp_str+=(id+','+mul0.toString()+','+mul1.toString()+','+mul2.toString()+'\n')
         }
-        console.log(exp_str);
-        document.getElementById('ip_xp').value=exp_str
+        //console.log(exp_str)
+        if(do_show)
+            document.getElementById('ip_xp').value=exp_str
+        else{ //do save to localstorage
+            let curtime=Date.now()
+            return curtime.toString()+';'+exp_str
+        }
         /*
         aaa,1,2,3
         bbb,5,7,8
         */
+    }
+
+    let save_data=key=>{
+        let val=export_func(false)
+        localStorage.setItem(key,val)
+        let ast=document.getElementById('autosave_time')
+        let now=new Date()
+        ast.innerText=`最後儲存：${now.toLocaleString()}`
+        ast.style.display='block';
+        console.log(`save to localstorage with key:${key} and val:${val}`)
+    }
+    setInterval(()=>{ //auto save function
+        let title_text=document.getElementById('title_text').value
+        if(title_text.length)
+            save_data(title_text)
+    },30*1000)
+
+    let load_to_list=()=>{
+        if(!localStorage.length)
+            return
+        let ls_keys=Object.keys(localStorage)
+        let now=Date.now()
+        let showlist=[]
+        ls_keys.forEach(k => {
+            let val=localStorage.getItem(k)
+            let ts=val.split(';')[0]
+            if(now-ts>86400000){
+                localStorage.removeItem(k)
+                console.log(`removed outdated item ${k}`)
+            }
+            else
+                showlist.push(k)
+        });
+        console.log(showlist)
+        let list_elem=document.getElementById('presets')
+        showlist.forEach(i=>{
+            let opt=document.createElement('option')
+            opt.value=i
+            opt.innerText=i
+            list_elem.appendChild(opt)
+        })
+    }
+    load_to_list()
+
+    document.getElementById('import').addEventListener('click',()=>{
+        import_func()
     })
 
+    document.getElementById('export').addEventListener('click',()=>{
+        export_func(true)
+    })
+
+    /*temporary manual save function*/
+    document.getElementById('local_save').addEventListener('click',()=>{
+        let title_text=document.getElementById('title_text').value
+        if(title_text.length)
+            save_data(title_text)
+    })
+    
     let delete_row=e=>{
         e.target.parentElement.remove()
         update()
@@ -215,44 +282,54 @@ let onload=()=>{
         document.getElementById('ip_xp').value=''
         //start setting preset
         if(sel_value.length){
-            if(PRESETS[sel_value]===undefined){
-                return
-            }
-            let list=PRESETS[sel_value]
-            
-            //special event
-            if(sel_value==="takeoff2"){ 
-                let chance=(getRandomNumbers())[0]%5
-                switch (chance) {
-                    case 0:
-                        list=[{name:'兔兔',multi:-1}]            
-                        /*document.getElementById('overlay_text').innerText='兔兔'
-                        setTimeout(() => {
-                            document.getElementById('overlay').style.display='block'
-                        }, 50);*/
-                        break;                
-                    case 1:        
-                        list=[{name:'脫',multi:-1}]
-                        /*document.getElementById('overlay_text').innerText='脫'
-                        setTimeout(() => {
-                            document.getElementById('overlay').style.display='block'
-                        }, 50);*/
-                        break;
-                    default:
-                        break;
+            if(PRESETS[sel_value]){ //always match preset first
+                console.log(`loading preset:${sel_value}`)
+                document.getElementById('title_text').value=''
+                document.getElementById('autosave_time').style.display='none'
+                let list=PRESETS[sel_value]
+                //special event
+                if(sel_value==="takeoff2"){ 
+                    let chance=(getRandomNumbers())[0]%5
+                    switch (chance) {
+                        case 0:
+                            list=[{name:'兔兔',multi:-1}]            
+                            document.getElementById('overlay_text').innerText='兔兔'
+                            setTimeout(() => {
+                                document.getElementById('overlay').style.display='block'
+                            }, 50);
+                            break;                
+                        case 1:        
+                            list=[{name:'脫',multi:-1}]
+                            document.getElementById('overlay_text').innerText='脫'
+                            setTimeout(() => {
+                                document.getElementById('overlay').style.display='block'
+                            }, 50);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                let result=''
+                for(let i=0;i<list.length;i++){
+                    let multi=list[i].multi
+                    if(multi===-1) //-1 means random num
+                        multi=(getRandomNumbers())[0]%PRESET_RAND_VAR+PRESET_RAND_BASE
+                    result+=(list[i].name+',0,0,'+multi+'\n')
+                }
+                document.getElementById('ip_xp').value=result
+                document.getElementById('import').dispatchEvent(new Event('click'))
             }
-            
-            let result=''
-            for(let i=0;i<list.length;i++){
-                let multi=list[i].multi
-                if(multi===-1) //-1 means random num
-                    multi=(getRandomNumbers())[0]%PRESET_RAND_VAR+PRESET_RAND_BASE
-                result+=(list[i].name+',0,0,'+multi+'\n')
+            else if(localStorage.getItem(sel_value)){
+                console.log(`loading from save:${sel_value}`)
+                document.getElementById('title_text').value=sel_value
+                let saved_obj=localStorage.getItem(sel_value).split(';')
+                let ast=document.getElementById('autosave_time')
+                let now=new Date(parseInt(saved_obj[0]))
+                ast.innerText=`上次儲存：${now.toLocaleString()}`
+                ast.style.display='block';
+                import_func(saved_obj[1])
+                console.log(saved_obj[1])
             }
-            document.getElementById('ip_xp').value=result
-            document.getElementById('import').dispatchEvent(new Event('click'))
-            
         }
     })
 }
