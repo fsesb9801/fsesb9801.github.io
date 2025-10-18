@@ -7,10 +7,10 @@ TODO:
 
 const PRESETS={
     takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:10},],
+    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:9},],
 }
-const PRESET_RAND_BASE=10
-const PRESET_RAND_VAR=89
+const PRESET_RAND_BASE=1
+const PRESET_RAND_VAR=99
 
 let onload=()=>{
     document.getElementById('title_text').addEventListener('change',()=>{
@@ -292,18 +292,10 @@ let onload=()=>{
                     let chance=(getRandomNumbers())[0]%5
                     switch (chance) {
                         case 0:
-                            list=[{name:'兔兔',multi:-1}]            
-                            document.getElementById('overlay_text').innerText='兔兔'
-                            setTimeout(() => {
-                                document.getElementById('overlay').style.display='block'
-                            }, 50);
+                            list=[{name:'兔兔',multi:-1},{name:'脫',multi:-1}] 
                             break;                
                         case 1:        
-                            list=[{name:'脫',multi:-1}]
-                            document.getElementById('overlay_text').innerText='脫'
-                            setTimeout(() => {
-                                document.getElementById('overlay').style.display='block'
-                            }, 50);
+                            list=[{name:'脫',multi:-1},{name:'兔兔',multi:1}]
                             break;
                         default:
                             break;
@@ -525,3 +517,4 @@ function getRandomNumbers(){
     }
     return array;
 }
+
