@@ -5,12 +5,13 @@ TODO:
 
 -----------------------------*/
 
-const PRESETS={
-    takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:-1},{name:'兔兔',multi:-1},{name:'再一次',multi:9},],
-}
 const PRESET_RAND_BASE=1
 const PRESET_RAND_VAR=99
+const PRESET_RANDOMVAL=-1
+const PRESETS={
+    takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
+    takeoff2:[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'再一次',multi:9},],
+}
 
 let onload=()=>{
     document.getElementById('title_text').addEventListener('change',()=>{
@@ -292,10 +293,10 @@ let onload=()=>{
                     let chance=(getRandomNumbers())[0]%5
                     switch (chance) {
                         case 0:
-                            list=[{name:'兔兔',multi:-1},{name:'脫',multi:-1}] 
+                            list=[{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'脫',multi:1}] 
                             break;                
                         case 1:        
-                            list=[{name:'脫',multi:-1},{name:'兔兔',multi:1}]
+                            list=[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:1}]
                             break;
                         default:
                             break;
@@ -304,7 +305,7 @@ let onload=()=>{
                 let result=''
                 for(let i=0;i<list.length;i++){
                     let multi=list[i].multi
-                    if(multi===-1) //-1 means random num
+                    if(multi===PRESET_RANDOMVAL) //-1 means random num
                         multi=(getRandomNumbers())[0]%PRESET_RAND_VAR+PRESET_RAND_BASE
                     result+=(list[i].name+',0,0,'+multi+'\n')
                 }
@@ -517,4 +518,5 @@ function getRandomNumbers(){
     }
     return array;
 }
+
 
