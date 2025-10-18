@@ -293,10 +293,10 @@ let onload=()=>{
                     let chance=(getRandomNumbers())[0]%5
                     switch (chance) {
                         case 0:
-                            list=[{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'脫',multi:1}] 
+                            list=[{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'脫',multi:0}] 
                             break;                
                         case 1:        
-                            list=[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:1}]
+                            list=[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:0}]
                             break;
                         default:
                             break;
@@ -518,5 +518,6 @@ function getRandomNumbers(){
     }
     return array;
 }
+
 
 
