@@ -5,12 +5,12 @@ TODO:
 
 -----------------------------*/
 
-const PRESET_RAND_BASE=1
-const PRESET_RAND_VAR=99
+const PRESET_RAND_BASE=0
+const PRESET_RAND_VAR=19
 const PRESET_RANDOMVAL=-1
 const PRESETS={
     takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'再一次',multi:9},],
+    takeoff2:[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'再一次',multi:3},{name:'沒事',multi:2}],
 }
 
 let onload=()=>{
@@ -290,13 +290,13 @@ let onload=()=>{
                 let list=PRESETS[sel_value]
                 //special event
                 if(sel_value==="takeoff2"){ 
-                    let chance=(getRandomNumbers())[0]%5
+                    let chance=(getRandomNumbers())[0]%10
                     switch (chance) {
                         case 0:
-                            list=[{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'脫',multi:0}] 
+                            list=[{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'脫',multi:0},{name:'沒事',multi:2}] 
                             break;                
                         case 1:        
-                            list=[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:0}]
+                            list=[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:0},{name:'沒事',multi:2}]
                             break;
                         default:
                             break;
@@ -518,6 +518,7 @@ function getRandomNumbers(){
     }
     return array;
 }
+
 
 
 
