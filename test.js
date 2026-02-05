@@ -9,8 +9,12 @@ const PRESET_RAND_BASE=0
 const PRESET_RAND_VAR=19
 const PRESET_RANDOMVAL=-1
 const PRESETS={
-    takeoff:[{name:'脫',multi:0},{name:'兔兔',multi:0},],
-    takeoff2:[{name:'脫',multi:PRESET_RANDOMVAL},{name:'兔兔',multi:PRESET_RANDOMVAL},{name:'再一次',multi:3},{name:'沒事',multi:2}],
+    takeoff:[
+        {name:'脫',multi:PRESET_RANDOMVAL},
+        {name:'兔兔',multi:PRESET_RANDOMVAL},
+        {name:'女僕',multi:PRESET_RANDOMVAL},
+        {name:'再一次',multi:3},
+    ],
 }
 
 let onload=()=>{
@@ -289,7 +293,7 @@ let onload=()=>{
                 document.getElementById('autosave_time').style.display='none'
                 let list=PRESETS[sel_value]
                 //special event
-                if(sel_value==="takeoff2"){ 
+                /*if(sel_value==="takeoff2"){ 
                     let chance=(getRandomNumbers())[0]%10
                     switch (chance) {
                         case 0:
@@ -301,7 +305,7 @@ let onload=()=>{
                         default:
                             break;
                     }
-                }
+                }*/
                 let result=''
                 for(let i=0;i<list.length;i++){
                     let multi=list[i].multi
