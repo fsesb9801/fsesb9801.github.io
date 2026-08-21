@@ -12,7 +12,8 @@ const PRESETS={
     takeoff:[
         {name:'脫',multi:PRESET_RANDOMVAL},
         {name:'兔兔',multi:PRESET_RANDOMVAL},
-        {name:'女僕',multi:PRESET_RANDOMVAL},
+        {name:'雨衣',multi:PRESET_RANDOMVAL},
+        {name:'小英雄',multi:PRESET_RANDOMVAL},
         {name:'再一次',multi:3},
     ],
 }
